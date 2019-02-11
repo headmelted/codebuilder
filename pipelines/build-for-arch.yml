@@ -47,7 +47,7 @@ jobs:
       docker ps;
       
       echo "Latest container is:";
-      container_id=$(docker inspect --format="{{.Id}}" ${docker_image});
+      container_id=$(docker inspect --format="{{.Id}}" ${docker_image} | sed 's/.*://');
       echo $container_id;
         
       docker commit $container_id "${docker_codebuilder_image}";
