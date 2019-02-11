@@ -16,4 +16,4 @@ jobs:
     arch: arm64
 - template: build-for-arch.yml
   parameters:
-arch: armhf
+    arch: armhf
