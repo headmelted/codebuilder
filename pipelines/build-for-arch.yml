@@ -30,6 +30,7 @@ jobs:
       docker_codebuilder_image="headmelted/codebuilder:${ARCHIE_ARCH}";
       
       docker build \
+        --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
         --build-arg DOCKER_TAG="${ARCHIE_ARCH}" \
         --build-arg ARCHIE_STRATEGY="${ARCHIE_STRATEGY}" \
         --build-arg ARCHIE_ARCH="${ARCHIE_ARCH}" \
