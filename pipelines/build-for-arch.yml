@@ -27,6 +27,12 @@ jobs:
       # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
       echo "Binding workspace and executing script for [${ARCHIE_STRATEGY}/${ARCHIE_ARCH}]";
       
+      docker_image="headmelted/archie:base";
+      docker_codebuilder_image="headmelted/codebuilder:${ARCHIE_ARCH}";
+      
+      echo "Docker source image is [${docker_image}]";
+      echo "Docker destination image is [${docker_codebuilder_image}]";
+      
       docker run \
         --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
         -e GITHUB_TOKEN=$(GITHUB_TOKEN) \
@@ -36,9 +42,9 @@ jobs:
         -e ARCHIE_TARGET_DEPENDENCIES \
         -v $(pwd):/root/build \
         -v $(Build.ArtifactStagingDirectory):/root/output \
-        "headmelted/archie:base" /bin/bash -c "cd /root/build && . /root/kitchen/tools/archie_initialize.sh";
+        ${docker_image} /bin/bash -c "cd /root/build && . /root/kitchen/tools/archie_initialize.sh";
         
-      docker commit "headmelted/archie:base" "headmelted/codebuilder:$ARCHIE_ARCH";
+      docker commit "${docker_image}" "${docker_codebuilder_image}";
       
       echo "Logging [$(DOCKER_LOGIN)] into docker hub";
       docker login -u $(DOCKER_LOGIN) -p $(DOCKER_PASSWORD);
