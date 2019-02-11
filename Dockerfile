@@ -1,2 +1,7 @@
 FROM headmelted/archie:base
-RUN /bin/bash -c "export ARCHIE_DOCKER_TAG=${DOCKER_TAG}; . /root/kitchen/tools/archie_initialize.sh;"
+ARG ARCHIE_ARCH
+ARG ARCHIE_STRATEGY
+ARG DOCKER_TAG
+ARG ARCHIE_HOST_DEPENDENCIES
+ARG ARCHIE_TARGET_DEPENDENCIES
+RUN /root/kitchen/tools/archie_initialize.sh
