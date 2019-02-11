@@ -45,7 +45,7 @@ jobs:
         ${docker_image} /bin/bash -c "cd /root/build && . /root/kitchen/tools/archie_initialize.sh";
         
       echo "Latest container is:";
-      docker container ls --latest;
+      docker inspect --format="{{.Id}}" ${docker_image};
         
       docker commit "${docker_image}" "${docker_codebuilder_image}";
       
