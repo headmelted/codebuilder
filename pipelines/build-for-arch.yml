@@ -27,8 +27,16 @@ jobs:
       # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
       echo "Binding workspace and executing script for [${ARCHIE_STRATEGY}/${ARCHIE_ARCH}]";
       
-      sudo bash -c "IMAGE_NAME='headmelted/codebuilder' && GITHUB_TOKEN='$(GITHUB_TOKEN)' && ARCHIE_HOST_DEPENDENCIES='${ARCHIE_HOST_DEPENDENCIES}' && ARCHIE_TARGET_DEPENDENCIES='${ARCHIE_TARGET_DEPENDENCIES}' && ARCHIE_STRATEGY=${ARCHIE_STRATEGY} && ARCHIE_ARCH=${ARCHIE_ARCH} && DOCKER_TAG=${ARCHIE_DOCKER_TAG} && . ./hooks/build";
-
+      docker_codebuilder_image="headmelted/codebuilder:${ARCHIE_ARCH}";
+      
+      docker build \
+        --build-arg DOCKER_TAG="${ARCHIE_ARCH}" \
+        --build-arg ARCHIE_STRATEGY="${ARCHIE_STRATEGY}" \
+        --build-arg ARCHIE_ARCH="${ARCHIE_ARCH}" \
+        --build-arg ARCHIE_HOST_DEPENDENCIES="${ARCHIE_HOST_DEPENDENCIES}" \
+        --build-arg ARCHIE_TARGET_DEPENDENCIES="${ARCHIE_TARGET_DEPENDENCIES}" \
+        -t "${docker_codebuilder_image}" .
+        
       echo "Logging [$(DOCKER_LOGIN)] into docker hub";
       docker login -u $(DOCKER_LOGIN) -p $(DOCKER_PASSWORD);
       echo "Pushing image to docker hub";
