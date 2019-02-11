@@ -44,15 +44,16 @@ jobs:
         -v $(Build.ArtifactStagingDirectory):/root/output \
         ${docker_image} /bin/bash -c "cd /root/build && . /root/kitchen/tools/archie_initialize.sh";
         
-      docker ls;
+      docker ps;
       
       echo "Latest container is:";
-      docker inspect --format="{{.Id}}" ${docker_image};
+      container_id=$(docker inspect --format="{{.Id}}" ${docker_image});
+      echo $container_id;
         
-      docker commit "${docker_image}" "${docker_codebuilder_image}";
+      docker commit $container_id "${docker_codebuilder_image}";
       
       echo "Logging [$(DOCKER_LOGIN)] into docker hub";
       docker login -u $(DOCKER_LOGIN) -p $(DOCKER_PASSWORD);
       echo "Pushing image to docker hub";
       echo "Pushing ${ARCHIE_ARCH} to Docker Hub";
-      docker push "headmelted/codebuilder:$ARCHIE_ARCH";
+      docker push "${docker_codebuilder_image}";
