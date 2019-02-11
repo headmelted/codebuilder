@@ -36,7 +36,7 @@ jobs:
         -e ARCHIE_ARCH \
         -e ARCHIE_HOST_DEPENDENCIES \
         -e ARCHIE_TARGET_DEPENDENCIES \
-        -t "headmelted/archie:base" .
+        /bin/bash -c ". /root/kitchen/tools/archie_initialize.sh";
         
       container_id=$(docker ps -q);
       
