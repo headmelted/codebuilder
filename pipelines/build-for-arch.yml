@@ -23,8 +23,6 @@ jobs:
       libxtst6 libxss-dev libxss1 libgconf-2-4 libasound2 libnss3
   steps:
   - bash: |
-      docker_image="headmelted/archie:base"
-      docker_codebuilder_image="headmelted/codebuilder:$ARCHIE_ARCH"
     
       # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
       echo "Binding workspace and executing script for [${ARCHIE_STRATEGY}/${ARCHIE_ARCH}]";
@@ -38,12 +36,12 @@ jobs:
         -e ARCHIE_TARGET_DEPENDENCIES \
         -v $(pwd):/root/build \
         -v $(Build.ArtifactStagingDirectory):/root/output \
-        $docker_image /bin/bash -c "cd /root/build && . /root/kitchen/tools/archie_initialize.sh";
+        "headmelted/archie:base" /bin/bash -c "cd /root/build && . /root/kitchen/tools/archie_initialize.sh";
         
-      docker commit $docker_image $docker_codebuilder_image;
+      docker commit "headmelted/archie:base" "headmelted/codebuilder:$ARCHIE_ARCH";
       
       echo "Logging [$(DOCKER_LOGIN)] into docker hub";
       docker login -u $(DOCKER_LOGIN) -p $(DOCKER_PASSWORD);
       echo "Pushing image to docker hub";
       echo "Pushing ${ARCHIE_ARCH} to Docker Hub";
-      docker push $docker_codebuilder_image;
+      docker push "headmelted/codebuilder:$ARCHIE_ARCH";
