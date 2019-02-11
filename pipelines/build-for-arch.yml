@@ -44,6 +44,8 @@ jobs:
         -v $(Build.ArtifactStagingDirectory):/root/output \
         ${docker_image} /bin/bash -c "cd /root/build && . /root/kitchen/tools/archie_initialize.sh";
         
+      docker ls;
+      
       echo "Latest container is:";
       docker inspect --format="{{.Id}}" ${docker_image};
         
