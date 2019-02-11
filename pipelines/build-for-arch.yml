@@ -44,6 +44,9 @@ jobs:
         -v $(Build.ArtifactStagingDirectory):/root/output \
         ${docker_image} /bin/bash -c "cd /root/build && . /root/kitchen/tools/archie_initialize.sh";
         
+      echo "Latest container is:";
+      docker container ls --latest;
+        
       docker commit "${docker_image}" "${docker_codebuilder_image}";
       
       echo "Logging [$(DOCKER_LOGIN)] into docker hub";
