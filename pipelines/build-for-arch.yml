@@ -1,4 +1,4 @@
-# build_for_arch_and_strategy.yml
+# build-for-arch.yml
 
 # This template is used to generate a archie image for a single architecture and strategy combination.
 
