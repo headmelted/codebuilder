@@ -41,7 +41,7 @@ jobs:
         -v $(Build.ArtifactStagingDirectory):/root/output \
         headmelted/archie:base /bin/bash -c ". /root/kitchen/tools/archie_initialize.sh";
         
-      container_id=$(docker ps -q);
+      container_id=$(docker ps -l);
       
       echo "Committing container [${container_id}] to [${docker_codebuilder_image}]";
       
