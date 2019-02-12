@@ -39,7 +39,7 @@ jobs:
         -e ARCHIE_TARGET_DEPENDENCIES \
         -v $(pwd):/root/build \
         -v $(Build.ArtifactStagingDirectory):/root/output \
-        headmelted/archie:base /bin/bash -c ". /root/kitchen/tools/archie_initialize.sh";
+        headmelted/archie:base /bin/bash -c ". /root/kitchen/tools/archie_initialize.sh && . /root/kitchen/tools/setup_nvm.sh";
         
       container_id=$(docker ps -lq);
       
